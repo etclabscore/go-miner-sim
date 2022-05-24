@@ -48,16 +48,16 @@ func TestPlotting(t *testing.T) {
 		// 		m.StrategySkipRandom = true
 		// 	},
 		// },
-		// {
-		// 	name: "tdtabs_4096",
-		// 	globalTweaks: func() {
-		// 		tabsAdjustmentDenominator = 4096 // what Isaac considers "equilibrium", most conservative
-		//
-		// 	},
-		// 	minerMutation: func(m *Miner) {
-		// 		m.ConsensusAlgorithm = TDTABS
-		// 	},
-		// },
+		{
+			name: "tdtabs_4096",
+			globalTweaks: func() {
+				tabsAdjustmentDenominator = 4096 // what Isaac considers "equilibrium", most conservative
+
+			},
+			minerMutation: func(m *Miner) {
+				m.ConsensusAlgorithm = TDTABS
+			},
+		},
 		// {
 		// 	name: "tdtabs_4096_tabsStep",
 		// 	globalTweaks: func() {
@@ -297,45 +297,48 @@ func runTestPlotting(t *testing.T, name string, mut func(m *Miner)) {
 	miners = minersNormal(minerEvents, mut)
 	// miners = minersTwo(minerEvents, mut)
 
-	// Create and install an attack miner.
-	// This miner will NOT publish their blocks.
-	// They will be rich.
-	// attack: 1606651707293287461
-	// defend:  203433894893418879
-	attackerMinerBt := NewBlockTree()
-	attackerMinerBt.AppendBlockByNumber(genesisBlock)
-	attackMiner := &Miner{
-		Index:         int64(len(miners)),
-		Address:       "ff0000",
-		Blocks:        attackerMinerBt,
-		Hashrate:      0.9,
-		HashesPerTick: int64(float64(genesisDifficulty) * 0.9),
-		Balance:       genesisBlockTABS * 11 / 10, // rich enough to always win TABS
-		BalanceCap:    0,
-		CostPerBlock:  0,
-		Latency: func() int64 {
-			return int64(latencySecondsDefault * float64(ticksPerSecond))
-		},
-		SendDelay: func(block *Block) int64 {
-			return int64(60 * 60 * 8 * float64(ticksPerSecond)) // 8 hour send delay
-		},
-		ReceiveDelay: func(block *Block) int64 {
-			return int64(60 * 60 * 8 * float64(ticksPerSecond)) // 8 hour receive delay
-		},
-		ConsensusAlgorithm:             0,
-		ConsensusArbitrations:          0,
-		ConsensusObjectiveArbitrations: 0,
-		StrategySkipRandom:             false,
-		head:                           nil,
-		receivedBlocks:                 BlockTree{},
-		neighbors:                      []*Miner{},
-		reorgs:                         make(map[int64]reorg),
-		decisionConditionTallies:       make(map[string]int),
-		cord:                           minerEvents,
+	wantAttackMiner := false
+	if wantAttackMiner {
+		// Create and install an attack miner.
+		// This miner will NOT publish their blocks.
+		// They will be rich.
+		// attack: 1606651707293287461
+		// defend:  203433894893418879
+		attackerMinerBt := NewBlockTree()
+		attackerMinerBt.AppendBlockByNumber(genesisBlock)
+		attackMiner := &Miner{
+			Index:         int64(len(miners)),
+			Address:       "ff0000",
+			Blocks:        attackerMinerBt,
+			Hashrate:      0.9,
+			HashesPerTick: int64(float64(genesisDifficulty) * 0.9),
+			Balance:       genesisBlockTABS * 11 / 10, // rich enough to always win TABS
+			BalanceCap:    0,
+			CostPerBlock:  0,
+			Latency: func() int64 {
+				return int64(latencySecondsDefault * float64(ticksPerSecond))
+			},
+			SendDelay: func(block *Block) int64 {
+				return int64(60 * 60 * 8 * float64(ticksPerSecond)) // 8 hour send delay
+			},
+			ReceiveDelay: func(block *Block) int64 {
+				return int64(60 * 60 * 8 * float64(ticksPerSecond)) // 8 hour receive delay
+			},
+			ConsensusAlgorithm:             0,
+			ConsensusArbitrations:          0,
+			ConsensusObjectiveArbitrations: 0,
+			StrategySkipRandom:             false,
+			head:                           nil,
+			receivedBlocks:                 BlockTree{},
+			neighbors:                      []*Miner{},
+			reorgs:                         make(map[int64]reorg),
+			decisionConditionTallies:       make(map[string]int),
+			cord:                           minerEvents,
+		}
+		mut(attackMiner)
+		attackMiner.processBlock(genesisBlock)
+		miners = append(miners, attackMiner)
 	}
-	mut(attackMiner)
-	attackMiner.processBlock(genesisBlock)
-	miners = append(miners, attackMiner)
 
 	c := gg.NewContext(800, 1200)
 	marginX, marginY := c.Width()/100, c.Width()/100

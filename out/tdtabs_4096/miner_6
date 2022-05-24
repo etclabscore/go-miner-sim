@@ -1,2 +1,2 @@
-a=cbe12c c=TDTABS hr=0.03 winr=0.022 wins=32 head.i=1446 head.tabs=21187 head.td=14045176054912 head.tdtabs=212970425096584792 k_mean=1.123 k_med=1.000 k_mode=[1] intervals_mean=14.919s d_mean.rel=0.971 balance=415 objective_decs=0.894 arbs=1755 reorgs.mag_mean=1.017
-consensus_score_high=0.89 miner_selfish=0.01 random=0.10 
+a=cbe12c c=TDTABS hr=0.03 winr=0.029 wins=46 head.i=1595 head.tabs=15834 head.td=15494394130254 head.tdtabs=206557771170818337 k_mean=1.034 k_med=1.000 k_mode=[1] intervals_mean=13.533s d_mean.rel=0.971 balance=796 objective_decs=0.906 arbs=1843 reorgs.mag_mean=1.007
+consensus_score_high=0.91 miner_selfish=0.00 random=0.09 
