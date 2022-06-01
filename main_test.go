@@ -152,8 +152,8 @@ func minersNormal(minerEvents chan minerEvent, mut func(m *Miner)) (miners []*Mi
 
 		// set up the miner
 
-		// minerStartingBalance := deriveMinerStartingBalance(genesisBlock.tabs, hashrates[i])
-		minerStartingBalance := deriveMinerStartingBalance(genesisBlock.tabs, hashrates[countMiners-1-i]) // backwards
+		minerStartingBalance := deriveMinerStartingBalance(genesisBlock.tabs, hashrates[i])
+		// minerStartingBalance := deriveMinerStartingBalance(genesisBlock.tabs, hashrates[countMiners-1-i]) // backwards
 		hashes := deriveMinerRelativeDifficultyHashes(genesisBlock.d, hashrates[i])
 
 		clr := grad.At(1 - (hashrates[i] * (1 / hashrates[0])))

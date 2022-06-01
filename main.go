@@ -36,7 +36,7 @@ var countMiners = int64(12)
 var minerNeighborRate float64 = 0.5 // 0.7
 var blockReward int64 = 3
 
-var latencySecondsDefault float64 = 2.5                // 1.23               // 2.5
+var latencySecondsDefault float64 = 2                  // 1.23               // 2.5
 var delaySecondsDefault float64 = 0                    // miner hesitancy to broadcast solution
 var receivePostponeSecondsDefault float64 = 100 / 1000 // 80 milliseconds, ish
 
@@ -47,7 +47,7 @@ const genesisDifficulty = 10_000_000_000
 // presumeMinerShareBalancePerBlockDenominator being 300 means that we assume that a miner's balance accounts for 1/300
 // of the overall genesis block TAB score. This implies 300 transactions per block.
 // This value is used to set the starting balance for miners.
-const presumeMinerShareBalancePerBlockDenominator = 100
+const presumeMinerShareBalancePerBlockDenominator = 10
 
 var txPoolBlockTABs = make(map[int64]int64)
 
@@ -716,6 +716,10 @@ func generateMinerHashrates(ty HashrateDistType, n int) []float64 {
 
 	out := []float64{}
 
+	// maxShare := float64(1) / 3
+	// maxShare := float64(1) / 4
+	maxShare := float64(4) / 10
+
 	switch ty {
 	case HashrateDistLongtail:
 		rem := float64(1)
@@ -723,15 +727,15 @@ func generateMinerHashrates(ty HashrateDistType, n int) []float64 {
 			var take float64
 			var share float64
 			if i == 0 {
-				share = float64(1) / 3
+				share = maxShare
 			} else {
 				share = 0.6
 			}
 			if i != n-1 {
 				take = rem * share
 			}
-			if take > float64(1)/3*rem {
-				take = float64(1) / 3 * rem
+			if take > maxShare*rem {
+				take = maxShare * rem
 			}
 			if i == n-1 {
 				take = rem
