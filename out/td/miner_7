@@ -1,2 +1,2 @@
-a=eee626 c=TD hr=0.01 winr=0.012 wins=18 head.i=1535 head.tabs=12240 head.td=15077623191080 head.tdtabs=167057516035843948 k_mean=1.083 k_med=1.000 k_mode=[1] intervals_mean=14.038s d_mean.rel=0.982 balance=803 objective_decs=0.770 arbs=2128 reorgs.mag_mean=1.013
-consensus_score_high=0.77 miner_selfish=0.02 random=0.21 
+a=eee626 c=TD hr=0.01 winr=0.008 wins=12 head.i=1585 head.tabs=12265 head.td=15749578208253 head.tdtabs=174316227119901639 k_mean=1.098 k_med=1.000 k_mode=[1] intervals_mean=13.616s d_mean.rel=0.993 balance=605 objective_decs=0.754 arbs=2218 reorgs.mag_mean=1.016
+consensus_score_high=0.75 miner_selfish=0.02 random=0.23 
